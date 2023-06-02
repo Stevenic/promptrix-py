@@ -1,8 +1,8 @@
 import unittest
-from TemplateSection import TemplateSection
-from VolatileMemory import VolatileMemory
-from FunctionRegistry import FunctionRegistry
-from GPT3Tokenizer import GPT3Tokenizer
+from promptrix.TemplateSection import TemplateSection
+from promptrix.VolatileMemory import VolatileMemory
+from promptrix.FunctionRegistry import FunctionRegistry
+from promotrix.GPT3Tokenizer import GPT3Tokenizer
 import asyncio
 
 class TestTemplateSection(unittest.TestCase):

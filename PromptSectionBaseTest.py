@@ -1,9 +1,9 @@
 import unittest
-from promptrixTypes import *
-from PromptSectionBase import PromptSectionBase
-from VolatileMemory import VolatileMemory
-from FunctionRegistry import FunctionRegistry
-from GPT3Tokenizer import GPT3Tokenizer
+from promptrix.promptrixTypes import *
+from promptrix.PromptSectionBase import PromptSectionBase
+from promptrix.VolatileMemory import VolatileMemory
+from promptrix.FunctionRegistry import FunctionRegistry
+from promptrix.GPT3Tokenizer import GPT3Tokenizer
 
 class TestSection(PromptSectionBase):
     async def render_as_messages(self, memory: PromptMemory, functions: PromptFunctions, tokenizer: Tokenizer, max_tokens: int):

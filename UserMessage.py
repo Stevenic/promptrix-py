@@ -1,4 +1,4 @@
-from TemplateSection import TemplateSection
+from promptrix.TemplateSection import TemplateSection
 
 class UserMessage(TemplateSection):
     """

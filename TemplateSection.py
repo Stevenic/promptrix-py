@@ -1,6 +1,6 @@
 #from promptrixTypes import *
-from PromptSectionBase import PromptSectionBase
-from Utilities import Utilities
+from promptrix.PromptSectionBase import PromptSectionBase
+from promptrix.Utilities import Utilities
 from typing import List, Callable, Any
 from enum import Enum
 import asyncio

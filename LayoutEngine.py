@@ -81,6 +81,7 @@ class LayoutEngine(PromptSection):
         return remaining
 
     async def layoutFixedSections(self, layout, callback):
+
         async def process_section(section):
             output = await callback(section.section)
             setattr(section, 'layout', output)
@@ -90,12 +91,12 @@ class LayoutEngine(PromptSection):
         #promises = [callback(section.section).then(lambda output: setattr(section, 'layout', output)) for section in layout if section.section.tokens < 0 or section.section.tokens > 1.0]
         #await asyncio.gather(*promises)
 
-    async def layoutProportionalSections(self, layout, callback,):
+    async def layoutProportionalSections(self, layout, callback):
         async def process_section(section):
             output = await callback(section.section)
             setattr(section, 'layout', output)
 
-        tasks = [process_section(section.section) for section in layout if 0.0 <= section.section.tokens <= 1.0]
+        tasks = [process_section(section) for section in layout if 0.0 <= section.section.tokens <= 1.0]
         await asyncio.gather(*tasks)
 
     def getLayoutLength(self, layout, textLayout=False, tokenizer=None) -> int:

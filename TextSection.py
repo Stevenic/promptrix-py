@@ -1,5 +1,5 @@
-from promptrixTypes import PromptMemory, PromptFunctions, Tokenizer, RenderedPromptSection, Message
-from PromptSectionBase import PromptSectionBase
+from promptrix.promptrixTypes import PromptMemory, PromptFunctions, Tokenizer, RenderedPromptSection, Message
+from promptrix.PromptSectionBase import PromptSectionBase
 
 class TextSection(PromptSectionBase):
     def __init__(self, text: str, role: str, tokens: int = -1, required: bool = True, separator: str = '\n', text_prefix: str = None):

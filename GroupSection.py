@@ -1,7 +1,7 @@
 from types import List
-from promptrixTypes import Message, PromptFunctions, PromptMemory, PromptSection, RenderedPromptSection, Tokenizer
-from .PromptSectionBase import PromptSectionBase
-from .LayoutEngine import LayoutEngine
+from promptrix.promptrixTypes import Message, PromptFunctions, PromptMemory, PromptSection, RenderedPromptSection, Tokenizer
+from promptrix.PromptSectionBase import PromptSectionBase
+from promptrix.LayoutEngine import LayoutEngine
 
 class GroupSection(PromptSectionBase):
     def __init__(self, sections: List[PromptSection], role: str = 'system', tokens: int = -1, required: bool = True, separator: str = '\n\n', textPrefix: str = None):

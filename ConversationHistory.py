@@ -1,6 +1,6 @@
-from promtrixTypes import Message, PromptFunctions, PromptMemory, RenderedPromptSection, Tokenizer
-from PromptSectionBase import PromptSectionBase
-from Utilities import Utilities
+from promptrix.promptrixTypes import Message, PromptFunctions, PromptMemory, RenderedPromptSection, Tokenizer
+from promptrix.PromptSectionBase import PromptSectionBase
+from promptrix.Utilities import Utilities
 
 class ConversationHistory(PromptSectionBase):
     def __init__(self, variable, tokens=1.0, required=False, userPrefix='user: ', assistantPrefix='assistant: ', separator='\n'):
@@ -10,14 +10,15 @@ class ConversationHistory(PromptSectionBase):
         self.assistantPrefix = assistantPrefix
 
     async def renderAsText(self, memory, functions, tokenizer, maxTokens):
-        history = memory.get(self.variable, [])
+        history = memory.get(self.variable)
+        print('history', self.variable, history)
         tokens = 0
         budget = min(self.tokens, maxTokens) if self.tokens > 1.0 else maxTokens
         separatorLength = len(tokenizer.encode(self.separator))
         lines = []
         for i in range(len(history)-1, -1, -1):
             msg = history[i]
-            message = Message(role=msg.role, content=Utilities.toString(tokenizer, msg.content))
+            message = Message(role=msg['role'], content=Utilities.to_string(tokenizer, msg['content']))
             prefix = self.userPrefix if message.role == 'user' else self.assistantPrefix
             line = prefix + message.content
             length = len(tokenizer.encode(line)) + (separatorLength if len(lines) > 0 else 0)
@@ -31,13 +32,14 @@ class ConversationHistory(PromptSectionBase):
         return RenderedPromptSection(output=self.separator.join(lines), length=tokens, tooLong=tokens > maxTokens)
 
     async def renderAsMessages(self, memory, functions, tokenizer, maxTokens):
-        history = memory.get(self.variable, [])
+        history = memory.get(self.variable)
+        print('history', self.variable,history)
         tokens = 0
         budget = min(self.tokens, maxTokens) if self.tokens > 1.0 else maxTokens
         messages = []
         for i in range(len(history)-1, -1, -1):
             msg = history[i]
-            message = Message(role=msg.role, content=Utilities.toString(tokenizer, msg.content))
+            message = Message(role=msg['role'], content=Utilities.to_string(tokenizer, msg['content']))
             length = len(tokenizer.encode(message.content))
             if len(messages) == 0 and self.required:
                 tokens += length

@@ -1,5 +1,5 @@
 import unittest
-from VolatileMemory import VolatileMemory
+from promptrix.VolatileMemory import VolatileMemory
 
 class TestVolatileMemory(unittest.TestCase):
     def setUp(self):

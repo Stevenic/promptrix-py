@@ -7,14 +7,14 @@ prompt = Prompt.Prompt([
     UserMessage.UserMessage('{{$input}}')
 ])
 
-memory = VolatileMemory.VolatileMemory({'input':'hi'})
+memory = VolatileMemory.VolatileMemory({'input':input()})
 functions = FunctionRegistry.FunctionRegistry()
 tokenizer = GPT3Tokenizer.GPT3Tokenizer()
 max_tokens = 2000
 
 # Render the prompt for a Chat Completion call
 async def render_chat_completion():
-    memory = VolatileMemory.VolatileMemory({'input':input('msg:')})
+    memory = VolatileMemory.VolatileMemory({'input':input('chat:')})
     as_messages = await prompt.renderAsMessages(memory, functions, tokenizer, max_tokens)
     if not as_messages.tooLong:
         messages = as_messages.output

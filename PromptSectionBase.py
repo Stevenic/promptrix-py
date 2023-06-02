@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List, Tuple, Any
 #from promptrixTypes import Message, PromptFunctions, PromptMemory, PromptSection, RenderedPromptSection
-from promptrixTypes import  RenderedPromptSection, Message
-import GPT3Tokenizer as Tokenizer
+from promptrix.promptrixTypes import  RenderedPromptSection, Message
+import promptrix.GPT3Tokenizer as Tokenizer
 import traceback
 
 class PromptSectionBase():
