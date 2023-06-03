@@ -11,15 +11,15 @@ class ConversationHistory(PromptSectionBase):
 
     async def renderAsText(self, memory, functions, tokenizer, maxTokens):
         history = memory.get(self.variable)
-        print('history', self.variable, history)
+        print('render as text history', history)
         tokens = 0
         budget = min(self.tokens, maxTokens) if self.tokens > 1.0 else maxTokens
         separatorLength = len(tokenizer.encode(self.separator))
         lines = []
         for i in range(len(history)-1, -1, -1):
             msg = history[i]
-            message = Message(role=msg['role'], content=Utilities.to_string(tokenizer, msg['content']))
-            prefix = self.userPrefix if message.role == 'user' else self.assistantPrefix
+            message = Utilities.to_string(tokenizer, msg['content'])
+            prefix = self.userPrefix if msg['role'] == 'user' else self.assistantPrefix
             line = prefix + message.content
             length = len(tokenizer.encode(line)) + (separatorLength if len(lines) > 0 else 0)
             if len(lines) == 0 and self.required:
@@ -33,7 +33,7 @@ class ConversationHistory(PromptSectionBase):
 
     async def renderAsMessages(self, memory, functions, tokenizer, maxTokens):
         history = memory.get(self.variable)
-        print('history', self.variable,history)
+        print('render as messages history', history)
         tokens = 0
         budget = min(self.tokens, maxTokens) if self.tokens > 1.0 else maxTokens
         messages = []
@@ -47,5 +47,5 @@ class ConversationHistory(PromptSectionBase):
             if tokens + length > budget:
                 break
             tokens += length
-            messages.insert(0, message)
+            messages.insert(0, msg)
         return RenderedPromptSection(output=messages, length=tokens, tooLong=tokens > maxTokens)

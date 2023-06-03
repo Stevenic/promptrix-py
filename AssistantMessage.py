@@ -1,11 +1,7 @@
 from typing import Optional
+import promptrix.TemplateSection as TemplateSection
 
-class TemplateSection:
-    def __init__(self, template: str, section_type: str, tokens: int, is_silent: bool, separator: str, prefix: str):
-        # Initialize TemplateSection attributes here
-        pass
-
-class AssistantMessage(TemplateSection):
+class AssistantMessage(TemplateSection.TemplateSection):
     """
     A message sent by the assistant.
     """
