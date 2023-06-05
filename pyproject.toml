@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "promptrix"
-version = "0.0.2"
+version = "0.0.5"
 authors = [
   { name="Steven Ickman", email="author@example.com" },
   { name="Bruce DAmbrosio", email="bruce.dambrosio@gmail.com" },
@@ -23,13 +23,7 @@ classifiers = [
 ]
 
 dependencies = [
-    #'dataclasses',
-    #'enum',
-    #'json',
     "requests",
-    #"types",
-    #"typing",
-    #"asyncio",
     "tiktoken",
     "pyyaml",
     'importlib-metadata; python_version<"3.9"',

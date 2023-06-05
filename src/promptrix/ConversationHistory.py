@@ -11,7 +11,7 @@ class ConversationHistory(PromptSectionBase):
 
     async def renderAsText(self, memory, functions, tokenizer, maxTokens):
         history = memory.get(self.variable)
-        print('render as text history', history)
+        if history is None: history=[]
         tokens = 0
         budget = min(self.tokens, maxTokens) if self.tokens > 1.0 else maxTokens
         separatorLength = len(tokenizer.encode(self.separator))
@@ -33,6 +33,7 @@ class ConversationHistory(PromptSectionBase):
 
     async def renderAsMessages(self, memory, functions, tokenizer, maxTokens):
         history = memory.get(self.variable)
+        if history is None: history = []
         tokens = 0
         budget = min(self.tokens, maxTokens) if self.tokens > 1.0 else maxTokens
         messages = []
@@ -43,6 +44,7 @@ class ConversationHistory(PromptSectionBase):
             if len(messages) == 0 and self.required:
                 tokens += length
                 messages.insert(0, message)
+                continue
             if tokens + length > budget:
                 break
             tokens += length

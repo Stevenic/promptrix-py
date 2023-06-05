@@ -18,7 +18,6 @@ class FunctionRegistry:
         return name in self._functions
 
     def get(self, name: str) -> Callable:
-        print(name)
         fn = self._functions.get(name)
         if not fn:
             raise Exception(f"Function {name} not found.")

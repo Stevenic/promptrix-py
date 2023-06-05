@@ -46,6 +46,7 @@ class TestVolatileMemory(unittest.TestCase):
 
     def test_delete_value(self):
         self.memory.set("test", 123)
+        self.memory.set("test2", 123)
         self.memory.delete("test")
         self.assertFalse(self.memory.has("test"))
         self.assertTrue(self.memory.has("test2"))

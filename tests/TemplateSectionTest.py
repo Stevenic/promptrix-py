@@ -2,7 +2,7 @@ import unittest
 from promptrix.TemplateSection import TemplateSection
 from promptrix.VolatileMemory import VolatileMemory
 from promptrix.FunctionRegistry import FunctionRegistry
-from promotrix.GPT3Tokenizer import GPT3Tokenizer
+from promptrix.GPT3Tokenizer import GPT3Tokenizer
 import asyncio
 
 class TestTemplateSection(unittest.TestCase):
@@ -103,11 +103,11 @@ class TestTemplateSection(unittest.TestCase):
 
         with self.assertRaises(Exception) as context:
             section = TemplateSection("Hello {{test3 'Big' World}", "user")
-        self.assertTrue('Invalid template: Hello {{test3 \'Big\' World}' in str(context.exception))
+            self.assertTrue('Invalid template: Hello {{test3 \'Big\' World}' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
             section = TemplateSection("Hello {{test3 'Big}}", "user")
-        self.assertTrue('Invalid template: Hello {{test3 \'Big}}' in str(context.exception))
+            self.assertTrue('Invalid template: Hello {{test3 \'Big}}' in str(context.exception))
 
 ts = TestTemplateSection()
 ts.setUp()

@@ -35,7 +35,7 @@ class PromptSectionBase():
         if self.tokens > 1.0:
             while length > self.tokens:
                 msg = output.pop()
-                encoded = tokenizer.encode(msg.content)
+                encoded = tokenizer.encode(msg['content'])
                 length -= len(encoded)
                 if length < self.tokens:
                     delta = self.tokens - length

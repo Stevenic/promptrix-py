@@ -1,10 +1,11 @@
-import unittest
+import aiounittest, unittest
 from promptrix.ConversationHistory import ConversationHistory
 from promptrix.VolatileMemory import VolatileMemory
 from promptrix.FunctionRegistry import FunctionRegistry
 from promptrix.GPT3Tokenizer import GPT3Tokenizer
+import asyncio
 
-class TestConversationHistory(unittest.TestCase):
+class TestConversationHistory(aiounittest.AsyncTestCase):
     def setUp(self):
         self.memory = VolatileMemory({
             "history": [
