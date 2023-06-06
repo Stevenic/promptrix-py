@@ -44,6 +44,7 @@ class LayoutEngine(PromptSection):
         return RenderedPromptSection(text, len(tokenizer.encode(text)), remaining < 0)
 
     async def renderAsMessages(self, memory: 'PromptMemory', functions: 'PromptFunctions', tokenizer: 'Tokenizer', maxTokens: int) -> RenderedPromptSection:
+
         layout = []
         self.addSectionsToLayout(self.sections, layout)
 
