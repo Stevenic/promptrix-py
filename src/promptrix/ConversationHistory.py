@@ -49,5 +49,5 @@ class ConversationHistory(PromptSectionBase):
             if tokens + length > budget:
                 break
             tokens += length
-            messages.insert(0, msg)
+            messages.insert(0, message)
         return RenderedPromptSection(output=messages, length=tokens, tooLong=tokens > maxTokens)
