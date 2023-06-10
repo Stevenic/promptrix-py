@@ -19,8 +19,17 @@ class PromptSectionBase():
         pass
 
     async def renderAsText(self, memory, functions, tokenizer, max_tokens):
+        #print(f'\n\n***** PromptSectionBase renderAsText entry {type(self)}')
         as_messages = await self.renderAsMessages(memory, functions, tokenizer, max_tokens)
-        text = self.separator.join([message['content'] for message in as_messages.output])
+        #print(f'n***** PromptSectionBase renderAsText {as_messages}')
+        messages = as_messages.output
+        #print(f'***** PromptSectionBase renderAsText messages len {len(messages)}')
+        #print(f'***** PromptSectionBase renderAsText messages[0] {messages[0]}')
+        #print(f"***** PromptSectionBase renderAsText message {messages[0]['content']}")
+        text = ''
+        for message in messages:
+            text += message['content']+'\n'
+        #text = self.separator.join([message['content'] for message in messages])
         prefix_length = len(tokenizer.encode(self.text_prefix))
         separator_length = len(tokenizer.encode(self.separator))
         length = prefix_length + as_messages.length + ((len(as_messages.output) - 1) * separator_length)
@@ -29,9 +38,11 @@ class PromptSectionBase():
             encoded = tokenizer.encode(text)
             text = tokenizer.decode(encoded[:self.tokens])
             length = self.tokens
+        #print(f"***** PromptSectionBase renderAsText exit\n")
         return RenderedPromptSection(output=text, length=length, tooLong=length > max_tokens)
 
     def return_messages(self, output, length, tokenizer, max_tokens):
+        #print(f'\n*** PromptSectionBase return_messages entry  {length}, {self.tokens}\n {output}\n')
         if self.tokens > 1.0:
             while length > self.tokens:
                 msg = output.pop()
@@ -42,4 +53,5 @@ class PromptSectionBase():
                     truncated = tokenizer.decode(encoded[:delta])
                     output.append(Message(role=msg.role, content=truncated))
                     length += delta
+        #print(f'***** PromptSectionBase return messages exit {output}')
         return RenderedPromptSection(output=output, length=length, tooLong=length > max_tokens)
