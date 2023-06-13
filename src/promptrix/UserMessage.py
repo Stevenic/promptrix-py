@@ -11,4 +11,4 @@ class UserMessage(TemplateSection):
         :param tokens: Optional. Sizing strategy for this section. Defaults to `auto`.
         :param user_prefix: Optional. Prefix to use for user messages when rendering as text. Defaults to `user: `.
         """
-        super().__init__(template, 'user', tokens, True, '\n', user_prefix)
+        super().__init__(template, user_prefix, tokens, True, '\n', text_prefix = user_prefix)

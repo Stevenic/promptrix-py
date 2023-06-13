@@ -17,7 +17,6 @@ class TemplateSection(PromptSectionBase):
         self.role = role
         self._parts = []
         self.parse_template()
-
     
     async def renderAsMessages(self, memory: 'PromptMemory', functions: 'PromptFunctions', tokenizer: 'Tokenizer', max_tokens: int) -> 'RenderedPromptSection[List[Message]]':
         rendered_parts = [part(memory, functions, tokenizer, max_tokens) for part in self._parts]

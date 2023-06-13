@@ -12,5 +12,5 @@ class AssistantMessage(TemplateSection.TemplateSection):
         :param tokens: Optional. Sizing strategy for this section. Defaults to `auto`.
         :param assistant_prefix: Optional. Prefix to use for assistant messages when rendering as text. Defaults to `assistant: `.
         """
-        super().__init__(template, 'assistant', tokens, True, '\n', assistant_prefix)
+        super().__init__(template, assistant_prefix, tokens, True, '\n', text_prefix=assistant_prefix)
 
