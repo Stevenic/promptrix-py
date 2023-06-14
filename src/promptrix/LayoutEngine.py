@@ -1,5 +1,5 @@
 from typing import List, TypeVar, Optional, Callable, Union
-from promptrixTypes import FunctionType
+from types import FunctionType
 import asyncio
 
 T = TypeVar('T')
