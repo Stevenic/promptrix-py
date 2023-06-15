@@ -5,6 +5,10 @@ from typing import List, Callable, Any
 from enum import Enum
 import asyncio
 
+def get_mem_str(memory, value):
+    #print (f'***** TemplateSection create_variable_renderer memory {memory}, value {value}')
+    return value
+
 class ParseState(Enum):
     IN_TEXT = 1
     IN_PARAMETER = 2
@@ -19,8 +23,10 @@ class TemplateSection(PromptSectionBase):
         self.parse_template()
     
     async def renderAsMessages(self, memory: 'PromptMemory', functions: 'PromptFunctions', tokenizer: 'Tokenizer', max_tokens: int) -> 'RenderedPromptSection[List[Message]]':
+        #print(f'***** TemplateSection entry {self._parts}')
         rendered_parts = [part(memory, functions, tokenizer, max_tokens) for part in self._parts]
         text = ''.join(rendered_parts)
+        #print(f'***** TemplateSection rendered parts {rendered_parts}')
         length = len(tokenizer.encode(text))
         return self.return_messages([{'role': self.role, 'content': text}], length, tokenizer, max_tokens)
 
@@ -75,13 +81,14 @@ class TemplateSection(PromptSectionBase):
         if len(part) > 0:
             self._parts.append(self.create_text_renderer(part))
         
-
+        
     def create_text_renderer(self, text: str) -> Callable[['PromptMemory', 'PromptFunctions', 'Tokenizer', int], 'Promise[str]']:
         return lambda memory, functions, tokenizer, max_tokens: text
 
     def create_variable_renderer(self, name: str) -> Callable[['PromptMemory', 'PromptFunctions', 'Tokenizer', int], 'Promise[str]']:
-        return lambda memory, functions, tokenizer, max_tokens: Utilities.to_string(tokenizer, memory.get(name))
-
+        #print (f'***** TemplateSection create_variable_renderer name {name}')
+        return lambda memory, functions, tokenizer, max_tokens: get_mem_str(memory, Utilities.to_string(tokenizer, memory.get(name)))
+ 
     def create_function_renderer(self, param: str) -> Callable[['PromptMemory', 'PromptFunctions', 'Tokenizer', int], 'Promise[str]']:
         name = None
         args = []

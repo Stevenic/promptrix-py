@@ -21,8 +21,6 @@ class PromptSectionBase():
     async def renderAsText(self, memory, functions, tokenizer, max_tokens):
         as_messages = await self.renderAsMessages(memory, functions, tokenizer, max_tokens)
         messages = as_messages.output
-        #print(f'***** PromptSectionBase renderAsText messages len {len(messages)}')
-        #print(f"***** PromptSectionBase renderAsText message {messages[0]['content']}")
         text = ''
         for message in messages:
             text += message['content']+'\n'
@@ -35,6 +33,8 @@ class PromptSectionBase():
             encoded = tokenizer.encode(text)
             text = tokenizer.decode(encoded[:self.tokens])
             length = self.tokens
+        if text.endswith('\n'):
+            text = text[:-1]
         return RenderedPromptSection(output=text, length=length, tooLong=length > max_tokens)
 
     def return_messages(self, output, length, tokenizer, max_tokens):
@@ -46,6 +46,7 @@ class PromptSectionBase():
                 if length < self.tokens:
                     delta = self.tokens - length
                     truncated = tokenizer.decode(encoded[:delta])
-                    output.append(Message(role=msg.role, content=truncated))
+                    role = msg['role'] if type(msg) == dict else msg.role
+                    output.append({'role':role, 'content':truncated})
                     length += delta
         return RenderedPromptSection(output=output, length=length, tooLong=length > max_tokens)

@@ -12,8 +12,8 @@ class GroupSection(PromptSectionBase):
 
     async def renderAsMessages(self, memory: PromptMemory, functions: PromptFunctions, tokenizer: Tokenizer, maxTokens: int):
         # Render sections to text
-        print(f'*****group section entry')
-        output, length, tooLong = await self._layoutEngine.renderAsText(memory, functions, tokenizer, maxTokens)
-        print(f'*****group section exit')
+        renderedPromptSection = await self._layoutEngine.renderAsText(memory, functions, tokenizer, maxTokens)
+        output = renderedPromptSection.output
+        length = renderedPromptSection.length
         # Return output as a single message
-        return self.returnMessages([{'role': self.role, 'content': output}], length, tokenizer, maxTokens)
+        return self.return_messages([{'role': self.role, 'content': output}], length, tokenizer, maxTokens)
