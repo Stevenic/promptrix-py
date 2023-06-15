@@ -31,7 +31,6 @@ Promptrix is a prompt layout engine for Large Language Models.
 
     ### basic chat loop
     while True:
-        query = input('Hi, how can I help you?)
         memory.set('input', query)
         msgs = asyncio.run(render_messages_completion())
         response = ... your favorite llm api (model, msgs, ...)
