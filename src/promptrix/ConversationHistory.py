@@ -3,7 +3,7 @@ from promptrix.PromptSectionBase import PromptSectionBase
 from promptrix.Utilities import Utilities
 
 class ConversationHistory(PromptSectionBase):
-    def __init__(self, variable, tokens=1.0, required=False, userPrefix='user: ', assistantPrefix='assistant: ', separator='\n'):
+    def __init__(self, variable, tokens=1.0, required=False, userPrefix='user', assistantPrefix='assistant', separator='\n'):
         super().__init__(tokens, required, separator)
         self.variable = variable
         self.userPrefix = userPrefix
