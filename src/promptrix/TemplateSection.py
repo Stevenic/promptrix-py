@@ -21,13 +21,15 @@ class TemplateSection(PromptSectionBase):
         self.role = role
         self._parts = []
         self.parse_template()
-    
+        #print(f'***** TemplateSection init template {self._parts}')
+        
     async def renderAsMessages(self, memory: 'PromptMemory', functions: 'PromptFunctions', tokenizer: 'Tokenizer', max_tokens: int) -> 'RenderedPromptSection[List[Message]]':
         #print(f'***** TemplateSection entry {self._parts}')
         rendered_parts = [part(memory, functions, tokenizer, max_tokens) for part in self._parts]
         text = ''.join(rendered_parts)
         #print(f'***** TemplateSection rendered parts {rendered_parts}')
         length = len(tokenizer.encode(text))
+        #print(f'***** TemplateSection rendered parts {text}')
         return self.return_messages([{'role': self.role, 'content': text}], length, tokenizer, max_tokens)
 
     """
@@ -37,6 +39,7 @@ class TemplateSection(PromptSectionBase):
         length = len(tokenizer.encode(text))
         return self.return_messages([{'role': self.role, 'content': text}], length, tokenizer, max_tokens)
     """
+    
     def parse_template(self):
         part = ''
         state = ParseState.IN_TEXT

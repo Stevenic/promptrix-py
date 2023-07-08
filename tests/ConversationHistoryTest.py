@@ -28,8 +28,8 @@ class TestConversationHistory(aiounittest.AsyncTestCase):
         self.assertEqual(section.tokens, 1.0)
         self.assertEqual(section.required, False)
         self.assertEqual(section.separator, "\n")
-        self.assertEqual(section.userPrefix, "user: ")
-        self.assertEqual(section.assistantPrefix, "assistant: ")
+        self.assertEqual(section.userPrefix, "user")
+        self.assertEqual(section.assistantPrefix, "assistant")
         self.assertEqual(section.text_prefix, "")
 
     async def test_renderAsMessages(self):

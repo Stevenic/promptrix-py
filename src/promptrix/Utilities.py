@@ -20,12 +20,7 @@ class Utilities:
             if hasattr(value, 'isoformat'):
                 return value.isoformat()
             else:
-                # Return shorter version of object
-                as_yaml = yaml.dump(value)
                 as_json = json.dumps(value)
-                if len(tokenizer.encode(as_yaml)) < len(tokenizer.encode(as_json)):
-                    return as_yaml
-                else:
-                    return as_json
+                return as_json
         else:
             return str(value)
