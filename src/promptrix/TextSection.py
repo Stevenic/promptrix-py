@@ -8,7 +8,7 @@ class TextSection(PromptSectionBase):
         self.role = role
         self._length = -1
 
-    async def renderAsMessages(self, memory: PromptMemory, functions: PromptFunctions, tokenizer: Tokenizer, max_tokens: int):
+    def renderAsMessages(self, memory: PromptMemory, functions: PromptFunctions, tokenizer: Tokenizer, max_tokens: int):
         if self._length < 0:
             self._length = len(tokenizer.encode(self.text))
 

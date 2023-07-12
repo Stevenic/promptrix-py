@@ -23,7 +23,7 @@ class TemplateSection(PromptSectionBase):
         self.parse_template()
         #print(f'***** TemplateSection init template {self._parts}')
         
-    async def renderAsMessages(self, memory: 'PromptMemory', functions: 'PromptFunctions', tokenizer: 'Tokenizer', max_tokens: int) -> 'RenderedPromptSection[List[Message]]':
+    def renderAsMessages(self, memory: 'PromptMemory', functions: 'PromptFunctions', tokenizer: 'Tokenizer', max_tokens: int) -> 'RenderedPromptSection[List[Message]]':
         #print(f'***** TemplateSection entry {self._parts}')
         rendered_parts = [part(memory, functions, tokenizer, max_tokens) for part in self._parts]
         text = ''.join(rendered_parts)
@@ -32,14 +32,6 @@ class TemplateSection(PromptSectionBase):
         #print(f'***** TemplateSection rendered parts {text}')
         return self.return_messages([{'role': self.role, 'content': text}], length, tokenizer, max_tokens)
 
-    """
-    async def renderAsMessages(self, memory: 'PromptMemory', functions: 'PromptFunctions', tokenizer: 'Tokenizer', max_tokens: int) -> 'RenderedPromptSection[List[Message]]':
-        rendered_parts = await asyncio.gather(*(part(memory, functions, tokenizer, max_tokens) for part in self._parts))
-        text = ''.join(rendered_parts)
-        length = len(tokenizer.encode(text))
-        return self.return_messages([{'role': self.role, 'content': text}], length, tokenizer, max_tokens)
-    """
-    
     def parse_template(self):
         part = ''
         state = ParseState.IN_TEXT
@@ -126,9 +118,5 @@ class TemplateSection(PromptSectionBase):
                     part += char
         save_part()
         
-        #def renderer(memory, functions, tokenizer, max_tokens):
-        #    value = await functions.invoke(name, memory, functions, tokenizer, args)
-        #    return Utilities.to_string(tokenizer, value)
-
         return lambda memory, functions, tokenizer, max_tokens: Utilities.to_string(tokenizer, functions.invoke(name, memory, functions, tokenizer, args))
 

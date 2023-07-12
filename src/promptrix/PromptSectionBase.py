@@ -15,11 +15,11 @@ class PromptSectionBase():
             raise Exception
 
     @abstractmethod
-    async def renderAsMessages(self, memory, functions, tokenizer, max_tokens):
+    def renderAsMessages(self, memory, functions, tokenizer, max_tokens):
         pass
 
-    async def renderAsText(self, memory, functions, tokenizer, max_tokens):
-        as_messages = await self.renderAsMessages(memory, functions, tokenizer, max_tokens)
+    def renderAsText(self, memory, functions, tokenizer, max_tokens):
+        as_messages = self.renderAsMessages(memory, functions, tokenizer, max_tokens)
         messages = as_messages.output
         text = ''
         for message in messages:

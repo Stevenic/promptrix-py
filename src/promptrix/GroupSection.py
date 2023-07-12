@@ -10,9 +10,9 @@ class GroupSection(PromptSectionBase):
         self.sections = sections
         self.role = role
 
-    async def renderAsMessages(self, memory: PromptMemory, functions: PromptFunctions, tokenizer: Tokenizer, maxTokens: int):
+    def renderAsMessages(self, memory: PromptMemory, functions: PromptFunctions, tokenizer: Tokenizer, maxTokens: int):
         # Render sections to text
-        renderedPromptSection = await self._layoutEngine.renderAsText(memory, functions, tokenizer, maxTokens)
+        renderedPromptSection = self._layoutEngine.renderAsText(memory, functions, tokenizer, maxTokens)
         output = renderedPromptSection.output
         length = renderedPromptSection.length
         # Return output as a single message

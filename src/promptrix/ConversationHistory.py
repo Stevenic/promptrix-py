@@ -9,7 +9,7 @@ class ConversationHistory(PromptSectionBase):
         self.userPrefix = userPrefix
         self.assistantPrefix = assistantPrefix
 
-    async def renderAsText(self, memory, functions, tokenizer, maxTokens):
+    def renderAsText(self, memory, functions, tokenizer, maxTokens):
         history = memory.get(self.variable)
         if history is None: history=[]
         tokens = 0
@@ -32,7 +32,7 @@ class ConversationHistory(PromptSectionBase):
             lines.insert(0, line)
         return RenderedPromptSection(output=self.separator.join(lines), length=tokens, tooLong=tokens > maxTokens)
 
-    async def renderAsMessages(self, memory, functions, tokenizer, maxTokens):
+    def renderAsMessages(self, memory, functions, tokenizer, maxTokens):
         history = memory.get(self.variable)
         if history is None: history = []
         tokens = 0

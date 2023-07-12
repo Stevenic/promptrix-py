@@ -26,11 +26,11 @@ class LayoutEngine(PromptSection):
     def __init__(self, sections: List[PromptSection], tokens: int, required: bool, separator: str):
         super().__init__(sections, tokens, required, separator)
 
-    async def renderAsText(self, memory, functions, tokenizer, maxTokens):
+    def renderAsText(self, memory, functions, tokenizer, maxTokens):
         layout = []
         self.addSectionsToLayout(self.sections, layout)
 
-        remaining = await self.layoutSections(
+        remaining = self.layoutSections(
             layout,
             maxTokens,
             lambda section: section.renderAsText(memory, functions, tokenizer, maxTokens),
@@ -43,12 +43,12 @@ class LayoutEngine(PromptSection):
         text = self.separator.join(output)
         return RenderedPromptSection(text, len(tokenizer.encode(text)), remaining < 0)
 
-    async def renderAsMessages(self, memory: 'PromptMemory', functions: 'PromptFunctions', tokenizer: 'Tokenizer', maxTokens: int) -> RenderedPromptSection:
+    def renderAsMessages(self, memory: 'PromptMemory', functions: 'PromptFunctions', tokenizer: 'Tokenizer', maxTokens: int) -> RenderedPromptSection:
 
         layout = []
         self.addSectionsToLayout(self.sections, layout)
 
-        remaining = await self.layoutSections(
+        remaining = self.layoutSections(
             layout,
             maxTokens,
             lambda section: section.renderAsMessages(memory, functions, tokenizer, maxTokens),
@@ -65,15 +65,15 @@ class LayoutEngine(PromptSection):
             else:
                 layout.append(PromptSectionLayout(section))
 
-    async def layoutSections(self, layout, maxTokens, cbFixed, cbProportional, textLayout=False, tokenizer=None):
-        await self.layoutFixedSections(layout, cbFixed)
+    def layoutSections(self, layout, maxTokens, cbFixed, cbProportional, textLayout=False, tokenizer=None):
+        self.layoutFixedSections(layout, cbFixed)
 
         remaining = maxTokens - self.getLayoutLength(layout, textLayout, tokenizer)
         while remaining < 0 and self.dropLastOptionalSection(layout):
             remaining = maxTokens - self.getLayoutLength(layout, textLayout, tokenizer)
 
         if self.needsMoreLayout(layout) and remaining > 0:
-            await self.layoutProportionalSections(layout, lambda section: cbProportional(section, remaining))
+            self.layoutProportionalSections(layout, lambda section: cbProportional(section, remaining))
 
             remaining = maxTokens - self.getLayoutLength(layout, textLayout, tokenizer)
             while remaining < 0 and self.dropLastOptionalSection(layout):
@@ -81,24 +81,22 @@ class LayoutEngine(PromptSection):
 
         return remaining
 
-    async def layoutFixedSections(self, layout, callback):
+    def layoutFixedSections(self, layout, callback):
 
-        async def process_section(section):
-            output = await callback(section.section)
+        def process_section(section):
+            output = callback(section.section)
             setattr(section, 'layout', output)
 
         tasks = [process_section(section) for section in layout if section.section.tokens < 0 or section.section.tokens > 1.0]
-        await asyncio.gather(*tasks)
         #promises = [callback(section.section).then(lambda output: setattr(section, 'layout', output)) for section in layout if section.section.tokens < 0 or section.section.tokens > 1.0]
-        #await asyncio.gather(*promises)
 
-    async def layoutProportionalSections(self, layout, callback):
-        async def process_section(section):
-            output = await callback(section.section)
+
+    def layoutProportionalSections(self, layout, callback):
+        def process_section(section):
+            output = callback(section.section)
             setattr(section, 'layout', output)
 
         tasks = [process_section(section) for section in layout if 0.0 <= section.section.tokens <= 1.0]
-        await asyncio.gather(*tasks)
 
     def getLayoutLength(self, layout, textLayout=False, tokenizer=None) -> int:
         if textLayout and tokenizer:
