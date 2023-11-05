@@ -1,7 +1,7 @@
 import unittest
-from FunctionRegistry import FunctionRegistry
-from VolatileMemory import VolatileMemory
-from GPT3Tokenizer import GPT3Tokenizer
+from promptrix.FunctionRegistry import FunctionRegistry
+from promptrix.VolatileMemory import VolatileMemory
+from promptrix.GPT3Tokenizer import GPT3Tokenizer
 
 class TestFunctionRegistry(unittest.TestCase):
     def test_constructor(self):
